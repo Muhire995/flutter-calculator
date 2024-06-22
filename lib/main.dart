@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
 
 void main() {
   runApp(CalculatorApp());
@@ -27,33 +26,6 @@ class CalculatorHomePage extends StatefulWidget {
 
 class _CalculatorHomePageState extends State<CalculatorHomePage> {
   String displayText = '0';
-  String expression = '';
-
-  void _buttonPressed(String buttonText) {
-    setState(() {
-      if (buttonText == 'C') {
-        displayText = '0';
-        expression = '';
-      } else if (buttonText == '=') {
-        try {
-          Parser p = Parser();
-          Expression exp = p.parse(expression);
-          ContextModel cm = ContextModel();
-          double eval = exp.evaluate(EvaluationType.REAL, cm);
-          displayText = eval.toString();
-        } catch (e) {
-          displayText = 'Error';
-        }
-      } else {
-        if (displayText == '0' && buttonText != '.') {
-          displayText = buttonText;
-        } else {
-          displayText += buttonText;
-        }
-        expression += buttonText;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +83,7 @@ class _CalculatorHomePageState extends State<CalculatorHomePage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: () => _buttonPressed(buttonText),
+              onPressed: () {},
               child: Text(
                 buttonText,
                 style: TextStyle(fontSize: 24, color: Colors.white),
