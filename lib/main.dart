@@ -1,107 +1,109 @@
 import 'package:flutter/material.dart';
+import 'sign_in.dart';
+import 'sign_up.dart';
+import 'calculator.dart';
 
 void main() {
-  runApp(CalculatorApp());
+  runApp(MyApp());
 }
 
-class CalculatorApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Calculator',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
       ),
-      home: CalculatorHomePage(),
+      home: HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class CalculatorHomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _CalculatorHomePageState createState() => _CalculatorHomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _CalculatorHomePageState extends State<CalculatorHomePage> {
-  String displayText = '0';
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    SignInScreen(),
+    SignUpScreen(),
+    CalculatorHomePage(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Calculator'),
-        backgroundColor: Colors.black,
+        title: Text('Flutter App'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-            child: Text(
-              displayText,
-              style: TextStyle(fontSize: 48, color: Colors.white),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
             ),
+            ListTile(
+              title: Text('Sign In'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 0;
+                });
+              },
+            ),
+            ListTile(
+              title: Text('Sign Up'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 1;
+                });
+              },
+            ),
+            ListTile(
+              title: Text('Calculator'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 2;
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.login),
+            label: 'Sign In',
           ),
-          Expanded(
-            child: Divider(),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.app_registration),
+            label: 'Sign Up',
           ),
-          Column(
-            children: [
-              _buildButtonRow('7', '8', '9', '/'),
-              _buildButtonRow('4', '5', '6', '*'),
-              _buildButtonRow('1', '2', '3', '-'),
-              _buildButtonRow('.', '0', '=', '+'),
-              _buildButtonRow('C'),
-            ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calculate),
+            label: 'Calculator',
           ),
         ],
       ),
     );
-  }
-
-  Widget _buildButtonRow(String first, [String second = '', String third = '', String fourth = '']) {
-    List<String> buttons = [first];
-    if (second.isNotEmpty) buttons.add(second);
-    if (third.isNotEmpty) buttons.add(third);
-    if (fourth.isNotEmpty) buttons.add(fourth);
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: buttons.map((buttonText) {
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _getButtonColor(buttonText),
-                padding: EdgeInsets.all(24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: () {},
-              child: Text(
-                buttonText,
-                style: TextStyle(fontSize: 24, color: Colors.white),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Color _getButtonColor(String buttonText) {
-    if (buttonText == 'C') {
-      return Colors.red;
-    } else if (buttonText == '=' || buttonText == '/' || buttonText == '*' || buttonText == '-' || buttonText == '+') {
-      return Colors.blueAccent;
-    } else {
-      return Colors.grey[850]!;
-    }
   }
 }
