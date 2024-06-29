@@ -50,12 +50,29 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              child: Text('Menu'),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/muhi.jpeg'), // Add your image asset here
+                    radius: 30,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Muhire Jean Claude',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
             ListTile(
+              leading: Icon(Icons.login),
               title: Text('Sign In'),
               onTap: () {
                 Navigator.pop(context);
@@ -65,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.app_registration),
               title: Text('Sign Up'),
               onTap: () {
                 Navigator.pop(context);
@@ -74,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.calculate),
               title: Text('Calculator'),
               onTap: () {
                 Navigator.pop(context);

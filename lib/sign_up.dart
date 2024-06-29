@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'sign_in.dart';  // Correct import path for SignInScreen
-import 'package:flutter/material.dart';
-import 'sign_in.dart';  // Correct import path for SignInScreen
-
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -14,6 +11,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _name = '';
   String _email = '';
   String _password = '';
+  String _gender = '';
+  String _country = '';
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
@@ -84,6 +83,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 onSaved: (value) {
                   _password = value!;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: 'Gender'),
+                items: ['Male', 'Female', 'Other']
+                    .map((label) => DropdownMenuItem(
+                          child: Text(label),
+                          value: label,
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _gender = value!;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select your gender';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _gender = value!;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Country'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your country';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _country = value!;
                 },
               ),
               SizedBox(height: 20),
